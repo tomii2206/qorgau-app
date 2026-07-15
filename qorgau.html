@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qorgau — Система прогнозирования приступов эпилепсии</title>
+    <style>
+        :root {
+            --logo-blue: #005fa3;
+            --logo-green: #84bd26;
+            --bg-main: #f2f8fa;
+            --text-dark: #0f2d4a;
+            --text-muted: #5c7285;
+            --card-bg: #ffffff;
+            --border-radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Навигация */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px; /* Добавил скругление для аккуратности лого */
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            color: var(--logo-blue);
+        }
+
+        /* Переключатель языков */
+        .lang-switcher {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background-color: transparent;
+            border: 1px solid rgba(0, 95, 163, 0.3);
+            color: var(--logo-blue);
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background-color: rgba(0, 95, 163, 0.08);
+        }
+
+        .lang-btn.active {
+            background-color: var(--logo-blue);
+            color: #ffffff;
+            border-color: var(--logo-blue);
+        }
+
+        /* Главный экран */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 48px;
+            align-items: center;
+            padding: 60px 0 80px 0;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 40px 0;
+            }
+            .hero-image {
+                justify-content: center;
+            }
+        }
+
+        h1 {
+            font-size: 46px;
+            font-weight: 850;
+            line-height: 1.2;
+            color: var(--logo-blue);
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            color: var(--logo-green);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            max-width: 540px;
+        }
+
+        @media (max-width: 900px) {
+            .hero p {
+                margin: 0 auto 36px auto;
+            }
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--logo-blue);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: background-color 0.2s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #004d85;
+            transform: translateY(-2px);
+        }
+
+        /* Телефон */
+        .hero-image {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .phone-mockup {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 9 / 19.3;
+            background: #ffffff;
+            border: 10px solid #e1ebf0;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(15, 45, 74, 0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phone-mockup img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Технология */
+        .tech-section {
+            padding: 80px 0;
+        }
+
+        .tech-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            color: var(--logo-blue);
+            margin-bottom: 48px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #e1ebf0;
+            border-radius: var(--border-radius);
+            padding: 32px;
+            box-shadow: 0 10px 25px rgba(15, 45, 74, 0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-image-slot {
+            width: 100%;
+            height: 160px;
+            background-color: var(--bg-main);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-num {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--logo-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--logo-blue);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Форма заказа */
+        .form-section {
+            padding: 80px 0;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid #e1ebf0;
+            border-radius: var(--border-radius);
+            padding: 48px;
+            box-shadow: 0 15px 35px rgba(15, 45, 74, 0.05);
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 24px;
+            }
+        }
+
+        .form-container h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--logo-blue);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .form-container p {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--bg-main);
+            border: 1px solid #e1ebf0;
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text-dark);
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--logo-blue);
+            background-color: #ffffff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--logo-green);
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 12px;
+        }
+
+        .btn-submit:hover {
+            background-color: #72a61e;
+        }
+
+        .btn-submit:disabled {
+            background-color: var(--text-muted);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Навигация -->
+        <nav>
+            <div class="logo-container">
+                <!-- Путь изменен на локальный -->
+                <img src="./images/logo.jpg" alt="Qorgau Logo" class="logo-img">
+                <span class="logo-text">QORGAU</span>
+            </div>
+            
+            <!-- Переключатель языков -->
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="ru" onclick="changeLanguage('ru')">RU</button>
+                <button class="lang-btn" data-lang="kk" onclick="changeLanguage('kk')">KZ</button>
+                <button class="lang-btn" data-lang="en" onclick="changeLanguage('en')">EN</button>
+            </div>
+        </nav>
+
+        <!-- Главный экран -->
+        <section class="hero">
+            <div class="hero-text">
+                <h1 id="hero-title">Система умного прогнозирования <span>приступов эпилепсии</span></h1>
+                <p id="hero-desc">Высокотехнологичный браслет и алгоритмы ИИ, которые предупреждают о критическом состоянии за минуту до его начала.</p>
+                <a href="#register" class="btn-primary" id="hero-cta">Получить ранний доступ</a>
+            </div>
+            <div class="hero-image">
+                <div class="phone-mockup">
+                    <!-- Путь изменен на локальный -->
+                    <img src="./images/phone-app.jpg" alt="Приложение Qorgau">
+                </div>
+            </div>
+        </section>
+
+        <!-- Технология -->
+        <section class="tech-section">
+            <h2 id="tech-title">Технология Qorgau</h2>
+            <div class="grid">
+                
+                <!-- Карточка 1 -->
+                <div class="card">
+                    <div class="card-image-slot">
+                        <!-- Путь изменен на локальный -->
+                        <img src="./images/step1.jpg" alt="Мониторинг биомаркеров">
+                    </div>
+                    <span class="card-num" id="step1-num">Шаг 01</span>
+                    <h3 id="step1-title">Мониторинг биомаркеров</h3>
+                    <p id="step1-desc">Сверхчувствительные датчики GSR отслеживают электродермальную активность кожи в режиме реального времени.</p>
+                </div>
+
+                <!-- Карточка 2 -->
+                <div class="card">
+                    <div class="card-image-slot">
+                        <!-- Путь изменен на локальный -->
+                        <img src="./images/step2.jpg" alt="ИИ-прогнозирование">
+                    </div>
+                    <span class="card-num" id="step2-num">Шаг 02</span>
+                    <h3 id="step2-title">ИИ-прогнозирование</h3>
+                    <p id="step2-desc">Алгоритм анализирует вегетативные аномалии и определяет приближение приступа за 20–60 секунд до его начала.</p>
+                </div>
+
+                <!-- Карточка 3 -->
+                <div class="card">
+                    <div class="card-image-slot">
+                        <!-- Путь изменен на локальный -->
+                        <img src="./images/step3.jpg" alt="Мгновенная помощь">
+                    </div>
+                    <span class="card-num" id="step3-num">Шаг 03</span>
+                    <h3 id="step3-title">Мгновенная помощь</h3>
+                    <p id="step3-desc">Браслет передает GPS-координаты близким и активирует голосовой динамик для помощи окружающих.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Форма -->
+        <section class="form-section" id="register">
+            <div class="form-container">
+                <h2 id="form-title">Присоединиться к проекту</h2>
+                <p id="form-desc">Станьте участником закрытого тестирования первой партии приборов.</p>
+                
+                <form id="leadForm">
+                    <!-- Скрытое поле для идентификации проекта в таблице -->
+                    <input type="hidden" name="Project" value="Qorgau">
+
+                    <div class="form-group">
+                        <label for="name" id="label-name">Ваше имя</label>
+                        <input type="text" id="name" name="Name" placeholder="..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" id="label-phone">Номер телефона</label>
+                        <input type="tel" id="phone" name="Phone" value="+7" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role" id="label-role">Ваша роль</label>
+                        <select id="role" name="Role" required>
+                            <option value="" disabled selected id="opt-placeholder">Кто вы?</option>
+                            <option value="patient" id="opt-patient">Пациент</option>
+                            <option value="relative" id="opt-relative">Родственник</option>
+                            <option value="doctor" id="opt-doctor">Врач</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btn-submit">Отправить заявку</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const translations = {
+            ru: {
+                heroTitle: "Система умного прогнозирования <span>приступов эпилепсии</span>",
+                heroDesc: "Высокотехнологичный браслет и алгоритмы ИИ, которые предупреждают о критическом состоянии за минуту до его начала.",
+                heroCta: "Получить ранний доступ",
+                techTitle: "Технология Qorgau",
+                step1Num: "Шаг 01",
+                step1Title: "Мониторинг биомаркеров",
+                step1Desc: "Сверхчувствительные датчики GSR отслеживают электродермальную активность кожи в режиме реального времени.",
+                step2Num: "Шаг 02",
+                step2Title: "ИИ-прогнозирование",
+                step2Desc: "Алгоритм анализирует вегетативные аномалии и определяет приближение приступа за 20–60 секунд до его начала.",
+                step3Num: "Шаг 03",
+                step3Title: "Мгновенная помощь",
+                step3Desc: "Браслет передает GPS-координаты близким и активирует голосовой динамик для помощи окружающих.",
+                formTitle: "Присоединиться к проекту",
+                formDesc: "Станьте участником закрытого тестирования первой партии приборов.",
+                labelName: "Ваше имя",
+                labelPhone: "Номер телефона",
+                labelRole: "Ваша роль",
+                optPlaceholder: "Кто вы?",
+                optPatient: "Пациент",
+                optRelative: "Родственник",
+                optDoctor: "Врач",
+                btnSubmit: "Отправить заявку",
+                alertSuccess: "Спасибо! Ваша заявка успешно отправлена.",
+                alertError: "Ошибка отправки. Пожалуйста, попробуйте еще раз."
+            },
+            kk: {
+                heroTitle: "Эпилепсия ұстамаларын <span>болжаудың ақылды жүйесі</span>",
+                heroDesc: "Критикалық жағдайды оның басталуынан бір минут бұрын ескертетін жоғары технологиялық білезік пен Жасанды Интеллект алгоритмдері.",
+                heroCta: "Ерте қолжетімділік",
+                techTitle: "Qorgau технологиясы",
+                step1Num: "01-Қадам",
+                step1Title: "Биомаркерлерді бақылау",
+                step1Desc: "Өте сезімтал GSR датчиктері нақты уақыт режимінде терінің электродермалдық белсенділігін қадағалайды.",
+                step2Num: "02-Қадам",
+                step2Title: "ЖИ-болжау",
+                step2Desc: "Алгоритм вегетативті аномалияларды талдап, ұстаманың жақындағанын ол басталғанға дейін 20–60 секунд бұрын анықтайды.",
+                step3Num: "03-Қадам",
+                step3Title: "Қауырт көмек",
+                step3Desc: "Білезік жақындарына GPS-координаттарын жібереді және айналадағыларға көмек көрсету үшін дауыстық динамикті іске қосады.",
+                formTitle: "Жобаға қосылу",
+                formDesc: "Құрылғылардың алғашқы жабық партиясын сынақтан өткізуге қатысушы болыңыз.",
+                labelName: "Атыңыз",
+                labelPhone: "Телефон нөмірі",
+                labelRole: "Сіздің рөліңіз",
+                optPlaceholder: "Кімсіз?",
+                optPatient: "Пациент",
+                optRelative: "Туысқан",
+                optDoctor: "Дәрігер",
+                btnSubmit: "Өтінім қалдыру",
+                alertSuccess: "Рақмет! Сіздің өтініміңіз сәтті жіберілді.",
+                alertError: "Жіберу кезінде қате кетті. Қайтадан байқап көріңіз."
+            },
+            en: {
+                heroTitle: "Smart system for predicting <span>epilepsy seizures</span>",
+                heroDesc: "A high-tech wristband and AI algorithms that warn of a critical condition a minute before it begins.",
+                heroCta: "Get Early Access",
+                techTitle: "Qorgau Technology",
+                step1Num: "Step 01",
+                step1Title: "Biomarker Monitoring",
+                step1Desc: "Ultra-sensitive GSR sensors track skin electrodermal activity in real-time.",
+                step2Num: "Step 02",
+                step2Title: "AI Prediction",
+                step2Desc: "The algorithm analyzes autonomic anomalies and detects an oncoming seizure 20–60 seconds before it begins.",
+                step3Num: "Step 03",
+                step3Title: "Instant Response",
+                step3Desc: "The bracelet sends GPS coordinates to loved ones and activates a voice speaker for public assistance.",
+                formTitle: "Join the Project",
+                formDesc: "Become a participant in the closed testing of the first batch of devices.",
+                labelName: "Your Name",
+                labelPhone: "Phone Number",
+                labelRole: "Your Role",
+                optPlaceholder: "Who are you?",
+                optPatient: "Patient",
+                optRelative: "Relative",
+                optDoctor: "Doctor",
+                btnSubmit: "Submit Application",
+                alertSuccess: "Thank you! Your application has been successfully submitted.",
+                alertError: "Submission error. Please try again."
+            }
+        };
+
+        let currentLang = localStorage.getItem('selectedLang') || 'ru';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('selectedLang', lang);
+            
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            document.getElementById('hero-title').innerHTML = translations[lang].heroTitle;
+            document.getElementById('hero-desc').textContent = translations[lang].heroDesc;
+            document.getElementById('hero-cta').textContent = translations[lang].heroCta;
+            document.getElementById('tech-title').textContent = translations[lang].techTitle;
+            
+            document.getElementById('step1-num').textContent = translations[lang].step1Num;
+            document.getElementById('step1-title').textContent = translations[lang].step1Title;
+            document.getElementById('step1-desc').textContent = translations[lang].step1Desc;
+            
+            document.getElementById('step2-num').textContent = translations[lang].step2Num;
+            document.getElementById('step2-title').textContent = translations[lang].step2Title;
+            document.getElementById('step2-desc').textContent = translations[lang].step2Desc;
+            
+            document.getElementById('step3-num').textContent = translations[lang].step3Num;
+            document.getElementById('step3-title').textContent = translations[lang].step3Title;
+            document.getElementById('step3-desc').textContent = translations[lang].step3Desc;
+            
+            document.getElementById('form-title').textContent = translations[lang].formTitle;
+            document.getElementById('form-desc').textContent = translations[lang].formDesc;
+            document.getElementById('label-name').textContent = translations[lang].labelName;
+            document.getElementById('label-phone').textContent = translations[lang].labelPhone;
+            document.getElementById('label-role').textContent = translations[lang].labelRole;
+            
+            document.getElementById('opt-placeholder').textContent = translations[lang].optPlaceholder;
+            document.getElementById('opt-patient').textContent = translations[lang].optPatient;
+            document.getElementById('opt-relative').textContent = translations[lang].optRelative;
+            document.getElementById('opt-doctor').textContent = translations[lang].optDoctor;
+            
+            document.getElementById('btn-submit').textContent = translations[lang].btnSubmit;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            changeLanguage(currentLang);
+        });
+
+        // ОТПРАВКА ДАННЫХ В GOOGLE ТАБЛИЦУ ЧЕРЕЗ SHEET MONKEY
+        document.getElementById('leadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btn-submit');
+            btn.disabled = true; // Защита от двойного клика
+            
+            const formData = new FormData(this);
+            
+            // Ссылка Sheet Monkey
+            const sheetMonkeyUrl = 'https://api.sheetmonkey.io/form/vpeYXiqtmpcGRgKm7vGDbP';
+
+            fetch(sheetMonkeyUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(translations[currentLang].alertSuccess);
+                    this.reset(); // Очищаем поля формы
+                    document.getElementById('phone').value = '+7'; // Сбрасываем телефон обратно в +7
+                } else {
+                    alert(translations[currentLang].alertError);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(translations[currentLang].alertError);
+            })
+            .finally(() => {
+                btn.disabled = false; // Разблокируем кнопку
+            });
+        });
+    </script>
+</body>
+</html>
