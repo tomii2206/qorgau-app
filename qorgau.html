@@ -52,7 +52,7 @@
             height: 45px;
             width: auto;
             object-fit: contain;
-            border-radius: 8px; /* Добавил скругление для аккуратности лого */
+            border-radius: 8px;
         }
 
         .logo-text {
@@ -155,7 +155,7 @@
             transform: translateY(-2px);
         }
 
-        /* Телефон */
+        /* Телефон и адаптивность картинок */
         .hero-image {
             display: flex;
             justify-content: flex-end;
@@ -173,6 +173,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
         .phone-mockup img {
@@ -343,15 +349,12 @@
 <body>
 
     <div class="container">
-        <!-- Навигация -->
         <nav>
             <div class="logo-container">
-                <!-- Путь изменен на локальный -->
-                <img src="./images/logo.jpg" alt="Qorgau Logo" class="logo-img">
+                <img src="logo.jpg" alt="Qorgau Logo" class="logo-img">
                 <span class="logo-text">QORGAU</span>
             </div>
             
-            <!-- Переключатель языков -->
             <div class="lang-switcher">
                 <button class="lang-btn" data-lang="ru" onclick="changeLanguage('ru')">RU</button>
                 <button class="lang-btn" data-lang="kk" onclick="changeLanguage('kk')">KZ</button>
@@ -359,7 +362,6 @@
             </div>
         </nav>
 
-        <!-- Главный экран -->
         <section class="hero">
             <div class="hero-text">
                 <h1 id="hero-title">Система умного прогнозирования <span>приступов эпилепсии</span></h1>
@@ -368,44 +370,36 @@
             </div>
             <div class="hero-image">
                 <div class="phone-mockup">
-                    <!-- Путь изменен на локальный -->
-                    <img src="./images/phone-app.jpg" alt="Приложение Qorgau">
+                    <img src="phone-app.jpg" alt="Приложение Qorgau">
                 </div>
             </div>
         </section>
 
-        <!-- Технология -->
         <section class="tech-section">
             <h2 id="tech-title">Технология Qorgau</h2>
             <div class="grid">
                 
-                <!-- Карточка 1 -->
                 <div class="card">
                     <div class="card-image-slot">
-                        <!-- Путь изменен на локальный -->
-                        <img src="./images/step1.jpg" alt="Мониторинг биомаркеров">
+                        <img src="step1.jpg" alt="Мониторинг биомаркеров">
                     </div>
                     <span class="card-num" id="step1-num">Шаг 01</span>
                     <h3 id="step1-title">Мониторинг биомаркеров</h3>
                     <p id="step1-desc">Сверхчувствительные датчики GSR отслеживают электродермальную активность кожи в режиме реального времени.</p>
                 </div>
 
-                <!-- Карточка 2 -->
                 <div class="card">
                     <div class="card-image-slot">
-                        <!-- Путь изменен на локальный -->
-                        <img src="./images/step2.jpg" alt="ИИ-прогнозирование">
+                        <img src="step2.jpg" alt="ИИ-прогнозирование">
                     </div>
                     <span class="card-num" id="step2-num">Шаг 02</span>
                     <h3 id="step2-title">ИИ-прогнозирование</h3>
                     <p id="step2-desc">Алгоритм анализирует вегетативные аномалии и определяет приближение приступа за 20–60 секунд до его начала.</p>
                 </div>
 
-                <!-- Карточка 3 -->
                 <div class="card">
                     <div class="card-image-slot">
-                        <!-- Путь изменен на локальный -->
-                        <img src="./images/step3.jpg" alt="Мгновенная помощь">
+                        <img src="step3.jpg" alt="Мгновенная помощь">
                     </div>
                     <span class="card-num" id="step3-num">Шаг 03</span>
                     <h3 id="step3-title">Мгновенная помощь</h3>
@@ -415,14 +409,12 @@
             </div>
         </section>
 
-        <!-- Форма -->
         <section class="form-section" id="register">
             <div class="form-container">
                 <h2 id="form-title">Присоединиться к проекту</h2>
                 <p id="form-desc">Станьте участником закрытого тестирования первой партии приборов.</p>
                 
                 <form id="leadForm">
-                    <!-- Скрытое поле для идентификации проекта в таблице -->
                     <input type="hidden" name="Project" value="Qorgau">
 
                     <div class="form-group">
@@ -586,16 +578,13 @@
             changeLanguage(currentLang);
         });
 
-        // ОТПРАВКА ДАННЫХ В GOOGLE ТАБЛИЦУ ЧЕРЕЗ SHEET MONKEY
         document.getElementById('leadForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const btn = document.getElementById('btn-submit');
-            btn.disabled = true; // Защита от двойного клика
+            btn.disabled = true;
             
             const formData = new FormData(this);
-            
-            // Ссылка Sheet Monkey
             const sheetMonkeyUrl = 'https://api.sheetmonkey.io/form/vpeYXiqtmpcGRgKm7vGDbP';
 
             fetch(sheetMonkeyUrl, {
@@ -605,8 +594,8 @@
             .then(response => {
                 if (response.ok) {
                     alert(translations[currentLang].alertSuccess);
-                    this.reset(); // Очищаем поля формы
-                    document.getElementById('phone').value = '+7'; // Сбрасываем телефон обратно в +7
+                    this.reset();
+                    document.getElementById('phone').value = '+7';
                 } else {
                     alert(translations[currentLang].alertError);
                 }
@@ -616,7 +605,7 @@
                 alert(translations[currentLang].alertError);
             })
             .finally(() => {
-                btn.disabled = false; // Разблокируем кнопку
+                btn.disabled = false;
             });
         });
     </script>
